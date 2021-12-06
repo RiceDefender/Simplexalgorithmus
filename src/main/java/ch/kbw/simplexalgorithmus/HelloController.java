@@ -1,4 +1,4 @@
-package ch.kbw.simplexalgorythmus;
+package ch.kbw.simplexalgorithmus;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -3,7 +3,7 @@ module ch.kbw.simplexalgorythmus {
     requires javafx.fxml;
 
 
-    opens ch.kbw.simplexalgorythmus to javafx.fxml;
-    exports ch.kbw.simplexalgorythmus;
+    opens ch.kbw.simplexalgorithmus to javafx.fxml;
+    exports ch.kbw.simplexalgorithmus;
 
 }
