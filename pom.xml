@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.kbw</groupId>
-    <artifactId>Simplexalgorythmus</artifactId>
+    <artifactId>Simplexalgorithmus</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Simplexalgorythmus</name>
+    <name>Simplexalgorithmus</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ch.kbw.simplexalgorythmus/ch.kbw.simplexalgorithmus.HelloApplication</mainClass>
+                            <mainClass>ch.kbw.simplexalgorithmus/ch.kbw.simplexalgorithmus.HelloApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>
