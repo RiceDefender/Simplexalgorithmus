@@ -20,6 +20,8 @@ public class PivotTable {
         double pivotnum;
 
 
+
+
         // find the pivot number
         for(int i = 0; i < pivotTable.length -1; i++){
             temp[i] = pivotTable[i][pivotTable[i].length-1] / pivotTable[i][indexX];
@@ -28,6 +30,14 @@ public class PivotTable {
         pivotnum = pivotTable[indexY][indexX];
         System.out.println(toString());
         System.out.println(indexX + " : " + indexY + " : " + pivotnum);
+
+
+        double devider = pivotTable[0][0] / pivotTable[indexY][indexX];
+        //if else if negative/positive
+        for (int i= 0; i< pivotTable[0].length; i++) {
+            pivotTable[0][i] = pivotTable[0][i] - pivotTable[indexY][i] * devider;
+            System.out.println(pivotTable[0][i]);
+        }
 
 
         // make pivot number 1 and ratio the rest of the pivot row
@@ -54,6 +64,7 @@ public class PivotTable {
         return out;
     }
 
+    //For later, when we implement FXML
     public void setValue(double val, int y, int x){
         this.pivotTable[y][x] = val;
     }

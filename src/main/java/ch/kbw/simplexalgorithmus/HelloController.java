@@ -21,7 +21,7 @@ public class HelloController {
         PivotTable pt = new PivotTable();
         pt.setPivotTable(ex_table);
         pt.cycle();
-        pt.cycle();
+
 
     }
 }
