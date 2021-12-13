@@ -32,12 +32,24 @@ public class PivotTable {
         System.out.println(indexX + " : " + indexY + " : " + pivotnum);
 
 
-        double devider = pivotTable[0][0] / pivotTable[indexY][indexX];
-        //if else if negative/positive
-        for (int i= 0; i< pivotTable[0].length; i++) {
-            pivotTable[0][i] = pivotTable[0][i] - pivotTable[indexY][i] * devider;
-            System.out.println(pivotTable[0][i]);
+        //Going subtract everything but pivot to 0
+        for (int j=0; j <pivotTable.length;j++ ) {
+            double devider = pivotTable[j][0] / pivotTable[indexY][indexX];
+            for (int i = 0; i < pivotTable[0].length; i++) {
+                if(pivotTable[j] != pivotTable[indexY]) { //Not deviding the pivot
+                pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider;
+                }
+            }
         }
+        System.out.println(toString());
+
+        //Make the pivot 1
+        double devider = pivotTable[indexY][0] / pivotTable[indexY][indexX];
+        for (int i = 0; i < pivotTable[0].length; i++) {
+                pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
+        }
+        System.out.println(toString());
+        System.out.println("AAAAAAAAAAA");
 
 
         // make pivot number 1 and ratio the rest of the pivot row
@@ -47,12 +59,12 @@ public class PivotTable {
             ratioRow(i, pivotTable[i][indexX]);
         }
         System.out.println(toString());
-
+    /*
         // make every number in pivotCol except pivot num 0
         for(int i = 0; i < pivotTable.length; i++){
             if (i != indexY) subtractAgainst(i, indexY);
         }
-        System.out.println(toString());
+     */
 
     }
 
