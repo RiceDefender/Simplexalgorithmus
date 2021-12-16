@@ -44,7 +44,7 @@ public class PivotTable {
         System.out.println(toString());
 
         //Make the pivot 1
-        double devider = pivotTable[indexY][0] / pivotTable[indexY][indexX];
+        double devider = pivotTable[indexY][0] / 1;
         for (int i = 0; i < pivotTable[0].length; i++) {
                 pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
         }
@@ -52,6 +52,37 @@ public class PivotTable {
         System.out.println("AAAAAAAAAAA");
 
 
+        indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
+        for(int i = 0; i < pivotTable.length -1; i++){
+            temp[i] = pivotTable[i][pivotTable[i].length-1] / pivotTable[i][indexX];
+        }
+        indexY = findMin(temp);
+        pivotnum = pivotTable[indexY][indexX];
+        System.out.println(toString());
+        System.out.println(indexX + " : " + indexY + " : " + pivotnum);
+        System.out.println(pivotTable[indexY][indexX]);
+
+        for (int j=0; j <pivotTable.length;j++ ) {
+            devider = pivotTable[j][1] / pivotTable[indexY][indexX];
+            for (int i = 0; i < pivotTable[1].length; i++) {
+                if(pivotTable[j] != pivotTable[indexY]) { //Not deviding the pivot
+                    pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider;
+                }
+            }
+        }
+        System.out.println(toString());
+
+        devider = pivotTable[indexY][indexX] / 1;
+        for (int i = 0; i < pivotTable[1].length; i++) {
+            if (pivotTable[indexY][i]!= 0) {
+                pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
+            }
+        }
+        System.out.println(toString());
+
+
+
+        /*
         // make pivot number 1 and ratio the rest of the pivot row
         ratioRow(indexY, pivotnum);
         System.out.println(toString());
@@ -59,6 +90,8 @@ public class PivotTable {
             ratioRow(i, pivotTable[i][indexX]);
         }
         System.out.println(toString());
+
+         */
     /*
         // make every number in pivotCol except pivot num 0
         for(int i = 0; i < pivotTable.length; i++){
