@@ -18,10 +18,9 @@ public class HelloController {
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
-        PivotTable pt = new PivotTable();
-        pt.setPivotTable(ex_table);
+        PivotTable pt = new PivotTable(2,3);
+        //pt.setPivotTable(ex_table);
         pt.cycle();
-
-
+        
     }
 }

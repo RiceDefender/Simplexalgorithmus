@@ -7,6 +7,14 @@ public class PivotTable {
 
     public PivotTable(int varCount, int height){
         this.pivotTable = new double[height + 1][varCount + height + 1];
+        for (int i = 0; i < height; i++) {
+            for (int j = varCount; j < varCount+height; j++) {
+                if (i==j-varCount)
+                    setValue(1,i,j);
+                else
+                    setValue(0,i,j);
+            }
+        }
     }
 
     public PivotTable(){
