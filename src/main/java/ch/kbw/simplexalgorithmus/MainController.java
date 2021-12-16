@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-public class HelloController {
+public class MainController {
     @FXML
     private Pane pain;
     @FXML
@@ -29,10 +29,16 @@ public class HelloController {
         clean();
         int val = Integer.parseInt(fld_varCount.getText());
         int val2 = Integer.parseInt(fld_equationCount.getText());
-        if(val < 8 && val2 < 8 && val > 1 && val2 > 1){
-            fillPane(val, val2);
+        if(val <= 8 && val2 <= 8 && val > 1 && val2 > 1){
+            if(val <= val2){
+                fillPane(val, val2);
+            }else{
+                lbl_error.setText("generate: error: more variables than equations");
+                System.out.println("generate: error: more variables than equations");
+            }
         }else{
-            lbl_error.setText("generate: error: values invalid. valid => 1 - 7.");
+            lbl_error.setText("generate: error: values invalid. valid => 2 - 8.");
+            System.out.println("generate: error: values invalid. valid => 2 - 8.");
         }
     }
 
@@ -42,14 +48,14 @@ public class HelloController {
         for (int i = 0; i < val+1; i++) {
             Label lbl = new Label();
             lbl.setLayoutX(50 + 62 * i);
-            lbl.setLayoutY(100);
+            lbl.setLayoutY(130);
             lbl.setPrefWidth(60);
             lbl.setId("lbl_" + i);
             ids.add("lbl_" + i);
             if (i < val) {
                 lbl.setText("X" + (i+1));
             } else {
-                lbl.setText("res");
+                lbl.setText("RES");
             }
             pain.getChildren().add(lbl);
         }
@@ -57,7 +63,7 @@ public class HelloController {
             for (int j = 0; j < val2+1; j++) {
                 TextField fld = new TextField();
                 fld.setLayoutX(50 + 62 * i);
-                fld.setLayoutY(127 + 27 * j);
+                fld.setLayoutY(152 + 27 * j);
                 fld.setPrefWidth(60);
                 fld.setId("fld_" + i + "_" + j);
                 ids.add("fld_" + i + "_" + j);
