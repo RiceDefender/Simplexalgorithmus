@@ -1,4 +1,4 @@
-module ch.kbw.simplexalgorythmus {
+module ch.kbw.simplexalgorithmus {
     requires javafx.controls;
     requires javafx.fxml;
 
