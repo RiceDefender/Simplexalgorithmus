@@ -7,6 +7,13 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+enum Format{
+    ERROR,
+    RESULT,
+    RESET,
+    INFO
+}
+
 public class MainController {
     @FXML
     private Pane pain;
@@ -22,22 +29,24 @@ public class MainController {
     @FXML
     public void calc() {
         // implement the cycling of the pivot table (algorithm)
+        // when done use setTextF(<result>, Format.RESULT);
     }
 
     @FXML
     public void generate() {
         clean();
+        setLabel("", Format.RESET);
         int val = Integer.parseInt(fld_varCount.getText());
         int val2 = Integer.parseInt(fld_equationCount.getText());
         if(val <= 8 && val2 <= 8 && val > 1 && val2 > 1){
             if(val <= val2){
                 fillPane(val, val2);
             }else{
-                lbl_error.setText("generate: error: more variables than equations");
+                setLabel("generate: error: more variables than equations", Format.ERROR);
                 System.out.println("generate: error: more variables than equations");
             }
         }else{
-            lbl_error.setText("generate: error: values invalid. valid => 2 - 8.");
+            setLabel("generate: error: values invalid. valid => 2 - 8.", Format.ERROR);
             System.out.println("generate: error: values invalid. valid => 2 - 8.");
         }
     }
@@ -76,5 +85,24 @@ public class MainController {
     private void clean(){
         if(ids == null) return;
         pain.getChildren().removeIf(n -> n.getId() != null && ids.contains(n.getId()));
+    }
+
+    // format label
+    private void setLabel(String out, Format format){
+        lbl_error.setText(out);
+        switch (format){
+            case ERROR:
+                lbl_error.setStyle("-fx-text-fill: red;");
+                break;
+            case RESULT:
+                lbl_error.setStyle("-fx-text-fill: green;");
+                break;
+            case RESET:
+                lbl_error.setStyle("-fx-text-fill: black;");
+                break;
+            case INFO:
+                lbl_error.setStyle("-fx-text-fill: orange;");
+                break;
+        }
     }
 }
