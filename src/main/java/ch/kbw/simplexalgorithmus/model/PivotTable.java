@@ -25,6 +25,7 @@ int tempvarCount, tempheight;
     }
 
     public void cycle(){
+        int amountofvar = tempvarCount;
         // vars
         double [] temp = new double[pivotTable.length-1]; // will save the divisional result of "num pivot column" / "result of equation"
 
@@ -34,7 +35,7 @@ int tempvarCount, tempheight;
         System.out.println(indexX);
 
         // k = Anz der Variablen
-        for (int k = 0; k < 2; k++) {
+        for (int k = 0; k < amountofvar; k++) {
 
             //int indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
             // find the pivot number
