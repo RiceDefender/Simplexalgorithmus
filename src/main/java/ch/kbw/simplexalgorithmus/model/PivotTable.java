@@ -3,45 +3,47 @@ package ch.kbw.simplexalgorithmus.model;
 import java.util.Arrays;
 
 public class PivotTable {
-    private double [][] pivotTable;
-int tempvarCount, tempheight;
+    private double[][] pivotTable;
+    int tempvarCount, tempheight;
 
-    public PivotTable(int varCount, int height){
+    public PivotTable(int varCount, int height) {
         tempvarCount = varCount;
         tempheight = height;
         this.pivotTable = new double[height + 1][varCount + height + 1];
         for (int i = 0; i < height; i++) {
-            for (int j = varCount; j < varCount+height; j++) {
-                if (i==j-varCount)
-                    setValue(1,i,j);
+            for (int j = varCount; j < varCount + height; j++) {
+                if (i == j - varCount)
+                    setValue(1, i, j);
                 else
-                    setValue(0,i,j);
+                    setValue(0, i, j);
             }
         }
     }
 
-    public PivotTable(){
+    public PivotTable() {
         // nüscht
     }
 
-    public void cycle(){
-        int amountofvar = tempvarCount;
+    public void cycle() {
+        int amountofvar = tempvarCount; //gets the amount of variables
         // vars
-        double [] temp = new double[pivotTable.length-1]; // will save the divisional result of "num pivot column" / "result of equation"
+        double[] temp = new double[pivotTable.length - 1]; // will save the divisional result of "num pivot column" / "result of equation"
 
         double pivotnum;
         int indexX = 0;
-        indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
+        indexX = findMin(pivotTable[pivotTable.length - 1]); // is the pivot row
         System.out.println(indexX);
 
         // k = Anz der Variablen
         for (int k = 0; k < amountofvar; k++) {
 
-            //int indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
+
             // find the pivot number
-            indexX = findMin(pivotTable[pivotTable.length-1]);
+            indexX = findMin(pivotTable[pivotTable.length - 1]);
             for (int i = 0; i < pivotTable.length - 1; i++) {
-                temp[i] = pivotTable[i][pivotTable[i].length - 1] / pivotTable[i][indexX];
+                if (pivotTable[i][indexX] != 0) { //if devider is not 0 devide!
+                    temp[i] = pivotTable[i][pivotTable[i].length - 1] / pivotTable[i][indexX];
+                }
             }
             int indexY = findMin(temp);
             pivotnum = pivotTable[indexY][indexX];
@@ -55,7 +57,7 @@ int tempvarCount, tempheight;
                 double devider = pivotTable[j][indexX] / pivotTable[indexY][indexX];
                 System.out.println(devider);
                 for (int i = 0; i < pivotTable[indexX].length; i++) {
-                    if (pivotTable[j] != pivotTable[indexY] ) { //Not deviding the pivot
+                    if (pivotTable[j] != pivotTable[indexY]) { //Not deviding the pivot
                         //&& j != 3
                         pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider;
                     }
@@ -158,18 +160,18 @@ int tempvarCount, tempheight;
 
     public String toString() {
         String out = "";
-        for(double [] d : pivotTable){
+        for (double[] d : pivotTable) {
             out += Arrays.toString(d) + "\n";
         }
         return out;
     }
 
     //For later, when we implement FXML
-    public void setValue(double val, int y, int x){
+    public void setValue(double val, int y, int x) {
         this.pivotTable[y][x] = val;
     }
 
-    public double getValue(int y, int x){
+    public double getValue(int y, int x) {
         return this.pivotTable[y][x];
     }
 
@@ -181,11 +183,11 @@ int tempvarCount, tempheight;
         this.pivotTable = pivotTable;
     }
 
-    private int findMin(double [] da){
+    private int findMin(double[] da) {
         double min = da[0];
         int index = 0;
-        for(int i = 0; i < da.length; i++){
-            if(da[i] < min){
+        for (int i = 0; i < da.length; i++) {
+            if (da[i] < min) {
                 min = da[i];
                 index = i;
             }
@@ -193,14 +195,14 @@ int tempvarCount, tempheight;
         return index;
     }
 
-    private void ratioRow(int rowIndex, double factor){
-        for(int i = 0; i < pivotTable[rowIndex].length; i++){
+    private void ratioRow(int rowIndex, double factor) {
+        for (int i = 0; i < pivotTable[rowIndex].length; i++) {
             this.pivotTable[rowIndex][i] /= factor;
         }
     }
 
     private void subtractAgainst(int rowI, int pivotRow) {
-        for(int i = 0; i < pivotTable[0].length; i++){
+        for (int i = 0; i < pivotTable[0].length; i++) {
             pivotTable[rowI][i] -= pivotTable[pivotRow][i];
         }
     }
