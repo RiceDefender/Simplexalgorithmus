@@ -103,8 +103,10 @@ public class PivotTable {
                 System.out.println(toString());
             }
 
-             */
+
             indexX++;
+
+             */
         }
 
         //COPY ED

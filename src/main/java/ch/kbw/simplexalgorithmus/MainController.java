@@ -1,5 +1,6 @@
 package ch.kbw.simplexalgorithmus;
 
+import ch.kbw.simplexalgorithmus.model.PivotTable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,10 +27,39 @@ public class MainController {
 
     private ArrayList<String> ids;
 
+    private ArrayList<TextField> flds;
+
+    private int varCount, equationCount;
+
+
+
+
+    public void getTable(){
+
+    }
+
     @FXML
     public void calc() {
         // implement the cycling of the pivot table (algorithm)
         // when done use setTextF(<result>, Format.RESULT);
+
+        for (int i = 0;i  < flds.size(); i++) {
+            System.out.println(flds.get(i).getText());
+        }
+
+        varCount = Integer.parseInt(fld_varCount.getText());
+        equationCount = Integer.parseInt(fld_equationCount.getText());
+
+        PivotTable pivotTable = new PivotTable(varCount,equationCount);
+        for (int y = 0; y < varCount+1; y++) {
+            for (int j = 0; j < equationCount + 1; j++) {
+                for (int i = 0;i  < flds.size(); i++) {
+                    pivotTable.setValue(Double.parseDouble(flds.get(i).getText()),y,j);
+                }
+
+            }
+        }
+        pivotTable.cycle();
     }
 
     @FXML
@@ -49,11 +79,13 @@ public class MainController {
             setLabel("generate: error: values invalid. valid => 2 - 8.", Format.ERROR);
             System.out.println("generate: error: values invalid. valid => 2 - 8.");
         }
+
     }
 
     // produces the matrix of TextFields that take the values of the equations.
     private void fillPane(int val, int val2){
         ids = new ArrayList<String>();
+        flds = new ArrayList<TextField>();
         for (int i = 0; i < val+1; i++) {
             Label lbl = new Label();
             lbl.setLayoutX(50 + 62 * i);
@@ -77,9 +109,11 @@ public class MainController {
                 fld.setId("fld_" + i + "_" + j);
                 ids.add("fld_" + i + "_" + j);
                 pain.getChildren().add(fld);
+                flds.add(fld);
             }
         }
     }
+
 
     // removes the matrix, to be reset.
     private void clean(){
