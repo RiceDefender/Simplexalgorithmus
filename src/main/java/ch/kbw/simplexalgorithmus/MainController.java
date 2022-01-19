@@ -68,7 +68,11 @@ public class MainController {
                 pivotTable.setValue(0D,y,varCount+equationCount);
             }
         }
-        pivotTable.cycle();
+
+
+        setLabel(pivotTable.cycle(), Format.RESULT);
+
+
     }
 
     private int getIndexFromId(String fld_id){

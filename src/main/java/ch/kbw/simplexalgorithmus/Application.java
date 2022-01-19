@@ -31,7 +31,7 @@ public class Application extends javafx.application.Application {
                  {1.5, 3, 1, 0, 0, 360},
                  {4, 4, 0, 1, 0, 360},
                  {1.5, 6, 0, 0, 1, 360},
-                 {-3, -4, 0, 0, 0, 0}
+                 {3, 4, 0, 0, 0, 0}
         };
         pt.setPivotTable(ex_table);
         pt.cycle();
