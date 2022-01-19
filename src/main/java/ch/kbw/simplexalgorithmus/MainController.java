@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -51,15 +52,32 @@ public class MainController {
         equationCount = Integer.parseInt(fld_equationCount.getText());
 
         PivotTable pivotTable = new PivotTable(varCount,equationCount);
-        for (int y = 0; y < varCount+1; y++) {
-            for (int j = 0; j < equationCount + 1; j++) {
-                for (int i = 0;i  < flds.size(); i++) {
-                    pivotTable.setValue(Double.parseDouble(flds.get(i).getText()),y,j);
+        for (int x = 0; x < varCount; x++) {
+            for (int y = 0; y < equationCount + 1; y++) {
+                if (!flds.get(getIndexFromId("fld_" + x + "_" + y)).getText().equals("")){
+                    pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + x + "_" + y)).getText()),y,x);
+                } else {
+                    pivotTable.setValue(0D,y,x);
                 }
-
+            }
+        }
+        for (int y = 0; y < equationCount + 1; y++) {
+            if (!flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText().equals("")){
+                pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText()),y,varCount+equationCount);
+            }else {
+                pivotTable.setValue(0D,y,varCount+equationCount);
             }
         }
         pivotTable.cycle();
+    }
+
+    private int getIndexFromId(String fld_id){
+        for(int i = 0; i < flds.size();i++){
+            if(!flds.get(i).getId().equals("") && flds.get(i).getId().equals(fld_id)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     @FXML
