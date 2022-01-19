@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -33,25 +32,18 @@ public class MainController {
     private int varCount, equationCount;
 
 
-
-
-    public void getTable(){
-
-    }
-
     @FXML
     public void calc() {
-        // implement the cycling of the pivot table (algorithm)
-        // when done use setTextF(<result>, Format.RESULT);
-
         for (int i = 0;i  < flds.size(); i++) {
             System.out.println(flds.get(i).getText());
         }
 
+        // save the pivotTable dimension into variables
         varCount = Integer.parseInt(fld_varCount.getText());
         equationCount = Integer.parseInt(fld_equationCount.getText());
 
         PivotTable pivotTable = new PivotTable(varCount,equationCount);
+        // read all textFields to get the values and store them into the newly created pivotTable
         for (int x = 0; x < varCount; x++) {
             for (int y = 0; y < equationCount + 1; y++) {
                 if (!flds.get(getIndexFromId("fld_" + x + "_" + y)).getText().equals("")){
@@ -69,12 +61,13 @@ public class MainController {
             }
         }
 
-
+        // calculate the most optimal solution and display it on the label
         setLabel(pivotTable.cycle(), Format.RESULT);
 
 
     }
 
+    // return the index of the textField in the list, by searching for its FXML id.
     private int getIndexFromId(String fld_id){
         for(int i = 0; i < flds.size();i++){
             if(!flds.get(i).getId().equals("") && flds.get(i).getId().equals(fld_id)){
@@ -84,6 +77,7 @@ public class MainController {
         return -1;
     }
 
+    // This function takes the values (dimensions) and creates a matrix of dynamic TextFields in the Main view
     @FXML
     public void generate() {
         clean();
