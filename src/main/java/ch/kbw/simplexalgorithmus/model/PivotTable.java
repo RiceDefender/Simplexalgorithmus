@@ -1,6 +1,11 @@
 package ch.kbw.simplexalgorithmus.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
+
+import static java.lang.Math.round;
+
 
 public class PivotTable {
     private double[][] pivotTable;
@@ -156,7 +161,9 @@ public class PivotTable {
         for(int x = 0; x < tempvarCount; x++){
             for(int y = 0; y < tempheight; y++){
                 if(pivotTable[y][x] == 1){
-                    out += initial_gain_f[x] + " * " + pivotTable[y][tempheight+tempvarCount] ;
+                    BigDecimal bd = new BigDecimal(Double.toString(pivotTable[y][tempheight+tempvarCount]));
+                    bd = bd.setScale(2, RoundingMode.HALF_EVEN);
+                    out += initial_gain_f[x] + " * " + (bd) ;
                 }
             }
             if(x != tempvarCount-1){
