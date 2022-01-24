@@ -167,6 +167,15 @@ public class PivotTable {
         return out;
     }
 
+    public void greaterEquals(int lineY){
+        for (int i=0; i < tempvarCount+1; i++){
+            for(int j = 0; j < tempvarCount; j++) {
+                pivotTable[lineY][j] *= -1;
+            }
+            pivotTable[lineY][tempvarCount+tempheight] *= -1;
+        }
+    }
+
     public String toString() {
         String out = "";
         for (double[] d : pivotTable) {
