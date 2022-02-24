@@ -174,6 +174,23 @@ public class PivotTable {
         return out;
     }
 
+    public void lastCol(){
+        for (int i = 0; i < tempheight; i++) {
+
+                System.out.println(pivotTable[i][tempvarCount+tempheight]);
+
+        }
+    }
+
+    public boolean negchecker(){
+        for (int i = 0; i < tempheight; i++) {
+            if(pivotTable[i][tempvarCount+tempheight] < 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void greaterEquals(int lineY){
         for (int i=0; i < tempvarCount+1; i++){
             for(int j = 0; j < tempvarCount; j++) {

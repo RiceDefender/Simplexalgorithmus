@@ -62,7 +62,13 @@ public class MainController {
         }
 
         // calculate the most optimal solution and display it on the label
-        setLabel(pivotTable.cycle(), Format.RESULT);
+        //pivotTable.lastCol();
+
+        if(!pivotTable.negchecker()){
+            setLabel(pivotTable.cycle(), Format.RESULT);
+        } else {
+            System.out.println("Dualer Simplex wird ausgeführt...");
+        }
 
 
     }
