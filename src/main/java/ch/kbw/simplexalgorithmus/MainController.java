@@ -1,10 +1,16 @@
 package ch.kbw.simplexalgorithmus;
 
 import ch.kbw.simplexalgorithmus.model.PivotTable;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
@@ -28,6 +34,8 @@ public class MainController {
     private ArrayList<String> ids;
 
     private ArrayList<TextField> flds;
+
+    private ArrayList<ToggleButton> toggleButtons;
 
     private int varCount, equationCount;
 
@@ -102,7 +110,9 @@ public class MainController {
     private void fillPane(int val, int val2){
         ids = new ArrayList<String>();
         flds = new ArrayList<TextField>();
-        for (int i = 0; i < val+1; i++) {
+        toggleButtons = new ArrayList<ToggleButton>();
+        for (int i = 0; i < val+2; i++) {
+            if(i == val){continue;}
             Label lbl = new Label();
             lbl.setLayoutX(50 + 62 * i);
             lbl.setLayoutY(130);
@@ -116,16 +126,44 @@ public class MainController {
             }
             pain.getChildren().add(lbl);
         }
-        for (int i = 0; i < val+1; i++) {
+        for (int i = 0; i < val+2; i++) { //iterate columns
+            //Draw first fields
             for (int j = 0; j < val2+1; j++) {
-                TextField fld = new TextField();
-                fld.setLayoutX(50 + 62 * i);
-                fld.setLayoutY(152 + 27 * j);
-                fld.setPrefWidth(60);
-                fld.setId("fld_" + i + "_" + j);
-                ids.add("fld_" + i + "_" + j);
-                pain.getChildren().add(fld);
-                flds.add(fld);
+                if (i == val) {
+                    ToggleButton tglBtn = new ToggleButton();
+                    if(j == val2){
+                        tglBtn.setText("=");
+                    }else{
+                        tglBtn.setText(">=");
+                        tglBtn.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                if(tglBtn.isSelected()){
+                                    tglBtn.setText("<=");
+                                }else{
+                                    tglBtn.setText(">=");
+                                }
+                            }
+                        });
+                    }
+                    tglBtn.setLayoutX(50 + 62 * i);
+                    tglBtn.setLayoutY(152 + 27 * j);
+                    tglBtn.setId("tglBtn_" + i);
+                    tglBtn.setPrefWidth(60);
+                    ids.add("tglBtn_" + i);
+                    toggleButtons.add(tglBtn);
+                    pain.getChildren().add(tglBtn);
+                }else{
+                    TextField fld = new TextField();
+                    fld.setLayoutX(50 + 62 * i);
+                    fld.setLayoutY(152 + 27 * j);
+                    fld.setPrefWidth(60);
+                    fld.setText(i + " : " + j);
+                    fld.setId("fld_" + i + "_" + j);
+                    ids.add("fld_" + i + "_" + j);
+                    pain.getChildren().add(fld);
+                    flds.add(fld);
+                }
             }
         }
     }
