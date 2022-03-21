@@ -4,13 +4,10 @@ import ch.kbw.simplexalgorithmus.model.PivotTable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
@@ -51,7 +48,7 @@ public class MainController {
         equationCount = Integer.parseInt(fld_equationCount.getText());
 
         PivotTable pivotTable = new PivotTable(varCount,equationCount);
-        // read all textFields to get the values and store them into the newly created pivotTable
+        // read all textFields (except "RES") to get the values and store them into the newly created pivotTable
         for (int x = 0; x < varCount; x++) {
             for (int y = 0; y < equationCount + 1; y++) {
                 if (!flds.get(getIndexFromId("fld_" + x + "_" + y)).getText().equals("")){
@@ -61,18 +58,24 @@ public class MainController {
                 }
             }
         }
+        // Reads the values from the right-most column "RES" also stores in pivot table.
         for (int y = 0; y < equationCount + 1; y++) {
-            if (!flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText().equals("")){
-                pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText()),y,varCount+equationCount);
+            if (!flds.get(getIndexFromId("fld_" + (varCount + 1) + "_" + y)).getText().equals("")){
+                pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + (varCount + 1) + "_" + y)).getText()),y,varCount+equationCount);
             }else {
                 pivotTable.setValue(0D,y,varCount+equationCount);
             }
         }
-
+        // Apply *-1 to row if toggle button is activated (unactivated >=, activated <=).
+        System.out.println("Before: \n" + pivotTable.toString());
+        for(int i = 0; i < equationCount; i++){
+            if(toggleButtons.get(i).isSelected()){
+                pivotTable.greaterEquals(i);
+            }
+        }
+        System.out.println("After: \n" + pivotTable.toString());
         // calculate the most optimal solution and display it on the label
         setLabel(pivotTable.cycle(), Format.RESULT);
-
-
     }
 
     // return the index of the textField in the list, by searching for its FXML id.
@@ -84,7 +87,6 @@ public class MainController {
         }
         return -1;
     }
-
     // This function takes the values (dimensions) and creates a matrix of dynamic TextFields in the Main view
     @FXML
     public void generate() {
@@ -148,9 +150,9 @@ public class MainController {
                     }
                     tglBtn.setLayoutX(50 + 62 * i);
                     tglBtn.setLayoutY(152 + 27 * j);
-                    tglBtn.setId("tglBtn_" + i);
+                    tglBtn.setId("tglBtn_" + j);
                     tglBtn.setPrefWidth(60);
-                    ids.add("tglBtn_" + i);
+                    ids.add("tglBtn_" + j);
                     toggleButtons.add(tglBtn);
                     pain.getChildren().add(tglBtn);
                 }else{
@@ -158,7 +160,6 @@ public class MainController {
                     fld.setLayoutX(50 + 62 * i);
                     fld.setLayoutY(152 + 27 * j);
                     fld.setPrefWidth(60);
-                    fld.setText(i + " : " + j);
                     fld.setId("fld_" + i + "_" + j);
                     ids.add("fld_" + i + "_" + j);
                     pain.getChildren().add(fld);
