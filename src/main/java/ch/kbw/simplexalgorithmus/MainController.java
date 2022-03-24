@@ -62,7 +62,8 @@ public class MainController {
         }
 
         // calculate the most optimal solution and display it on the label
-        setLabel(pivotTable.cycle(), Format.RESULT);
+        setLabel(pivotTable.dualcycle(), Format.RESULT);
+        pivotTable.toString();
 
 
     }
