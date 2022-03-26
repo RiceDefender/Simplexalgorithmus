@@ -6,7 +6,7 @@ public class PivotTable {
     private double[][] pivotTable;
     int tempvarCount, tempheight;
     double[] initial_gain_f;
-    int ABC=0;
+    boolean downisneg = true;
     boolean rightisneg = true; //=> only for Dualer Simplex
 
     //Erstellt einen PivotTable mit der Einheitsmatrix
@@ -42,8 +42,8 @@ public class PivotTable {
         }
 
         // k = Anz der Variablen
-        for (int k = 0; k < amountofvar; k++) {
-
+        int k = 0;
+        while (downisneg && (k<amountofvar)) {
             // find the pivot number
             double[] temp = new double[pivotTable.length - 1];
             int indexX = findMin(pivotTable[pivotTable.length - 1]);
@@ -150,6 +150,18 @@ public class PivotTable {
                 if (i != indexY) subtractAgainst(i, indexY);
             }
          */
+            int negativechecker = 0;
+            for (int i = 0; i < (tempvarCount-1); i++){ //If check the last row is pos
+                if (pivotTable[tempheight][i] < 0){
+                    negativechecker++;
+                }
+            }
+            if(negativechecker == 0){
+                downisneg = false;
+                System.out.println("down is" + downisneg);
+            }
+            System.out.println("down is" + downisneg);
+            k++;
         }
 
         //Output of Solution
@@ -173,8 +185,6 @@ public class PivotTable {
         // 2. divide every number of maximize function array with corresponding number in pivotrow -> chose smallest resulting number as pivotcolumn index.
         // 3.
         //////////////////////////////////////////////////////////
-
-
 
         // As long as the right side isn't positive
 
@@ -315,6 +325,10 @@ public class PivotTable {
         }
         out += " = " + Math.abs(pivotTable[pivotTable.length - 1][tempheight + tempvarCount]);
         return out;
+    }
+
+    public boolean isDownisneg(){
+        return true;
     }
 
     public void greaterEquals(int lineY) {
