@@ -175,12 +175,10 @@ public class PivotTable {
     }
 
     public void greaterEquals(int lineY){
-        for (int i=0; i < tempvarCount+1; i++){
-            for(int j = 0; j < tempvarCount; j++) {
-                pivotTable[lineY][j] *= -1;
-            }
-            pivotTable[lineY][tempvarCount+tempheight] *= -1;
+        for(int j = 0; j < tempvarCount; j++) {
+            pivotTable[lineY][j] *= -1;
         }
+        pivotTable[lineY][tempvarCount+tempheight] *= -1;
     }
 
     public String toString() {
@@ -218,15 +216,4 @@ public class PivotTable {
         }
         return index;
     }
-    //Not used Experimental Code
-    /*private void ratioRow(int rowIndex, double factor) {
-        for (int i = 0; i < pivotTable[rowIndex].length; i++) {
-            this.pivotTable[rowIndex][i] /= factor;
-        }
-    }
-    private void subtractAgainst(int rowI, int pivotRow) {
-        for (int i = 0; i < pivotTable[0].length; i++) {
-            pivotTable[rowI][i] -= pivotTable[pivotRow][i];
-        }
-    }*/
 }
