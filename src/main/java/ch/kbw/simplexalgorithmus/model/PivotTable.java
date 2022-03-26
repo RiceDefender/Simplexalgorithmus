@@ -151,7 +151,7 @@ public class PivotTable {
             }
          */
             int negativechecker = 0;
-            for (int i = 0; i < (tempvarCount-1); i++){ //If check the last row is pos
+            for (int i = 0; i < tempvarCount; i++){ //If check the last row is pos
                 if (pivotTable[tempheight][i] < 0){
                     negativechecker++;
                 }
@@ -300,6 +300,12 @@ public class PivotTable {
             System.out.println("right is" + rightisneg);
 
             //ABC++;
+        }
+        //Check if it should switch to cycle for primaler Simplex.
+        for (int i = 0; i < tempvarCount; i++){
+            if (pivotTable[tempheight][i] < 0){
+               cycle();
+            }
         }
 
         /*
