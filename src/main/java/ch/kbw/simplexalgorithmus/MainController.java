@@ -1,6 +1,6 @@
 /**
  * @since 22.11.2021
- * @version 25.03.2022
+ * @version 26.03.2022
  * @author Trong-Nghia Dao
  * @author Nicolas Amberg
  * @author Jens Eichenberger
@@ -84,6 +84,8 @@ public class MainController {
         System.out.println("After: \n" + pivotTable.toString());
         // calculate the most optimal solution and display it on the label
         setLabel(pivotTable.cycle(), Format.RESULT);
+        System.out.println(pivotTable.toString());
+
     }
 
     // return the index of the textField in the list, by searching for its FXML id.
