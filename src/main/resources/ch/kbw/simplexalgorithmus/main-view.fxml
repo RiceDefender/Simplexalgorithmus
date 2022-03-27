@@ -17,7 +17,7 @@
           <Font size="18.0" />
         </font>
     </Label>
-    <ButtonBar layoutX="511.0" layoutY="417.0" prefHeight="40.0" prefWidth="267.0">
+    <ButtonBar layoutX="514.0" layoutY="417.0" prefHeight="40.0" prefWidth="264.0">
       <buttons>
          <Button mnemonicParsing="false" onAction="#generate" text="Felder anzeigen" />
           <Button mnemonicParsing="false" onAction="#calc" text="Berechnen" />
@@ -43,4 +43,5 @@
          <Label text="Anzahl Gleichungen" GridPane.rowIndex="1" />
       </children>
    </GridPane>
+   <Button fx:id="btn_minMax" layoutX="646.0" layoutY="41.0" mnemonicParsing="false" onAction="#minmaxPivotTable" prefWidth="100.0" text="Maximieren" />
 </Pane>
