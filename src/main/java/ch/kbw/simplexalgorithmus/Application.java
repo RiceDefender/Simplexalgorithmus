@@ -1,6 +1,5 @@
 package ch.kbw.simplexalgorithmus;
 
-import ch.kbw.simplexalgorithmus.model.PivotTable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,8 +10,8 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 650, 450);
-        stage.setTitle("Simplexalgorithmus Calculator");
+        Scene scene = new Scene(fxmlLoader.load(), 792, 470);
+        stage.setTitle("Simplexalgorithmus Rechner");
         stage.setScene(scene);
         stage.show();
     }

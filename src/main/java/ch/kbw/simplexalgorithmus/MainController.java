@@ -1,9 +1,21 @@
+/**
+ * @since 22.11.2021
+ * @version 26.03.2022
+ * @author Trong-Nghia Dao
+ * @author Nicolas Amberg
+ * @author Jens Eichenberger
+ */
+
 package ch.kbw.simplexalgorithmus;
 
 import ch.kbw.simplexalgorithmus.model.PivotTable;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -24,10 +36,14 @@ public class MainController {
     private TextField fld_equationCount;
     @FXML
     private Label lbl_error;
+    @FXML
+    private Button btn_minMax;
 
     private ArrayList<String> ids;
 
     private ArrayList<TextField> flds;
+
+    private ArrayList<ToggleButton> toggleButtons;
 
     private int varCount, equationCount;
 
@@ -43,7 +59,7 @@ public class MainController {
         equationCount = Integer.parseInt(fld_equationCount.getText());
 
         PivotTable pivotTable = new PivotTable(varCount,equationCount);
-        // read all textFields to get the values and store them into the newly created pivotTable
+        // read all textFields (except "RES") to get the values and store them into the newly created pivotTable
         for (int x = 0; x < varCount; x++) {
             for (int y = 0; y < equationCount + 1; y++) {
                 if (!flds.get(getIndexFromId("fld_" + x + "_" + y)).getText().equals("")){
@@ -53,17 +69,34 @@ public class MainController {
                 }
             }
         }
+        // Reads the values from the right-most column "RES" also stores in pivot table.
         for (int y = 0; y < equationCount + 1; y++) {
-            if (!flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText().equals("")){
-                pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + varCount + "_" + y)).getText()),y,varCount+equationCount);
+            if (!flds.get(getIndexFromId("fld_" + (varCount + 1) + "_" + y)).getText().equals("")){
+                pivotTable.setValue(Double.parseDouble(flds.get(getIndexFromId("fld_" + (varCount + 1) + "_" + y)).getText()),y,varCount+equationCount);
             }else {
                 pivotTable.setValue(0D,y,varCount+equationCount);
             }
         }
-
+        if(btn_minMax.getText().equals("Minimieren")){
+            pivotTable.umkehren();
+        }
+        // Apply *-1 to row if toggle button is activated (unactivated >=, activated <=).
+        System.out.println("Before: \n" + pivotTable.toString());
+        for(int i = 0; i < equationCount; i++){
+            if(toggleButtons.get(i).isSelected()){
+                pivotTable.greaterEquals(i);
+            }
+        }
+        System.out.println("After: \n" + pivotTable.toString());
         // calculate the most optimal solution and display it on the label
-        setLabel(pivotTable.cycle(), Format.RESULT);
 
+        System.out.println(pivotTable.toString());
+
+        if(!pivotTable.negchecker()){
+            setLabel(pivotTable.cycle(), Format.RESULT);
+        } else {
+            setLabel(pivotTable.dualcycle(), Format.RESULT);
+        }
 
     }
 
@@ -77,7 +110,7 @@ public class MainController {
         return -1;
     }
 
-    // This function takes the values (dimensions) and creates a matrix of dynamic TextFields in the Main view
+    // This function takes the values (dimensions) and creates a matrix of dynamic TextFields und ToggleButtons in the main view.
     @FXML
     public void generate() {
         clean();
@@ -98,34 +131,109 @@ public class MainController {
 
     }
 
-    // produces the matrix of TextFields that take the values of the equations.
+    @FXML
+    public void minmaxPivotTable(){
+        if(btn_minMax.getText().equals("Maximieren")){
+            btn_minMax.setText("Minimieren");
+        }else{
+            btn_minMax.setText("Maximieren");
+        }
+        for(int i = 0; i < toggleButtons.size() - 1; i++){
+            ToggleButton current = toggleButtons.get(i);
+            if(current.getText().equals(">=")){
+                current.setText("<=");
+                current.setSelected(true);
+            }else{
+                current.setText(">=");
+                current.setSelected(false);
+            }
+        }
+    }
+
+    // produces the matrix of TextFields und ToggleButtons that take the values of the equations.
     private void fillPane(int val, int val2){
-        ids = new ArrayList<String>();
-        flds = new ArrayList<TextField>();
-        for (int i = 0; i < val+1; i++) {
+        ids = new ArrayList<String>();                  // clean() even necessary?
+        flds = new ArrayList<TextField>();              //
+        toggleButtons = new ArrayList<ToggleButton>();  //
+        // iterate through the top label row.
+        for (int i = 0; i < val+2; i++) {
+            if(i == val){continue;}
             Label lbl = new Label();
-            lbl.setLayoutX(50 + 62 * i);
+            lbl.setLayoutX(130 + 62 * i);
             lbl.setLayoutY(130);
             lbl.setPrefWidth(60);
-            lbl.setId("lbl_" + i);
-            ids.add("lbl_" + i);
-            if (i < val) {
-                lbl.setText("X" + (i+1));
+            lbl.setId("lblTop_" + i);
+            ids.add("lblTop_" + i);
+            if (i < val) { // variable column need to have different labels.
+                lbl.setText("Variable " + (i+1));
             } else {
-                lbl.setText("RES");
+                lbl.setText("Resultat");
             }
             pain.getChildren().add(lbl);
         }
-        for (int i = 0; i < val+1; i++) {
+        // iterate over Equation labels
+        for(int i = 0; i < val2+1; i++){
+            Label lbl = new Label();
+            lbl.setLayoutX(50);
+            if(i == val2){ // goal function label needs to be different.
+                lbl.setLayoutY(162 + 27 * i);
+                lbl.setText("Zielfunktion");
+            }else{
+                lbl.setLayoutY(152 + 27 * i);
+                lbl.setText("Gleichung " + (i + 1));
+            }
+            lbl.setPrefHeight(25);
+            lbl.setPrefWidth(100);
+            lbl.setId("lblSide_" + i);
+            ids.add("lblSide_" + i);
+            pain.getChildren().add(lbl);
+        }
+        // iterate columns of TextFields and ToggleButtons
+        for (int i = 0; i < val+2; i++) {
+            // draw first fields
             for (int j = 0; j < val2+1; j++) {
-                TextField fld = new TextField();
-                fld.setLayoutX(50 + 62 * i);
-                fld.setLayoutY(152 + 27 * j);
-                fld.setPrefWidth(60);
-                fld.setId("fld_" + i + "_" + j);
-                ids.add("fld_" + i + "_" + j);
-                pain.getChildren().add(fld);
-                flds.add(fld);
+                if (i == val) { // look if the column has a button
+                    ToggleButton tglBtn = new ToggleButton();
+                    if(j == val2){ // toggle button of goal function? needs to be different.
+                        tglBtn.setText("=");
+                    }else{
+                        tglBtn.setText(">=");
+                        tglBtn.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                if(tglBtn.isSelected()){
+                                    tglBtn.setText("<=");
+                                }else{
+                                    tglBtn.setText(">=");
+                                }
+                            }
+                        });
+                    }
+                    tglBtn.setLayoutX(130 + 62 * i);
+                    if(j == val2){
+                        tglBtn.setLayoutY(162 + 27 * j);
+                    }else{
+                        tglBtn.setLayoutY(152 + 27 * j);
+                    }
+                    tglBtn.setId("tglBtn_" + j);
+                    tglBtn.setPrefWidth(60);
+                    ids.add("tglBtn_" + j);
+                    toggleButtons.add(tglBtn);
+                    pain.getChildren().add(tglBtn);
+                }else{ // create normal text field
+                    TextField fld = new TextField();
+                    fld.setLayoutX(130 + 62 * i);
+                    if(j == val2){ // goal function needs have a bigger top-margin
+                        fld.setLayoutY(162 + 27 * j);
+                    }else{
+                        fld.setLayoutY(152 + 27 * j);
+                    }
+                    fld.setPrefWidth(60);
+                    fld.setId("fld_" + i + "_" + j);
+                    ids.add("fld_" + i + "_" + j);
+                    pain.getChildren().add(fld);
+                    flds.add(fld);
+                }
             }
         }
     }
@@ -140,19 +248,11 @@ public class MainController {
     // format label
     private void setLabel(String out, Format format){
         lbl_error.setText(out);
-        switch (format){
-            case ERROR:
-                lbl_error.setStyle("-fx-text-fill: red;");
-                break;
-            case RESULT:
-                lbl_error.setStyle("-fx-text-fill: green;");
-                break;
-            case RESET:
-                lbl_error.setStyle("-fx-text-fill: black;");
-                break;
-            case INFO:
-                lbl_error.setStyle("-fx-text-fill: orange;");
-                break;
+        switch (format) {
+            case ERROR -> lbl_error.setStyle("-fx-text-fill: red;");
+            case RESULT -> lbl_error.setStyle("-fx-text-fill: green;");
+            case RESET -> lbl_error.setStyle("-fx-text-fill: black;");
+            case INFO -> lbl_error.setStyle("-fx-text-fill: orange;");
         }
     }
 }
