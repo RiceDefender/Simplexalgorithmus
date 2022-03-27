@@ -40,13 +40,22 @@ public class PivotTable {
         int amountofvar = tempvarCount; //gets the amount of variables
 
 
+        //Check if it should switch to cycle for primaler Simplex.
+        boolean priturnneg = false;
         for (int i = 0; i < tempvarCount; i++) {
-            pivotTable[pivotTable.length - 1][i] *= -1;
+            if (!(pivotTable[tempheight][i] < 0)) {
+                priturnneg = true;
+            }
+        }
+        if (priturnneg){
+            for (int j = 0; j < tempvarCount; j++) {
+                pivotTable[pivotTable.length - 1][j] *= -1;
+            }
         }
 
         // k = Anz der Variablen
         int k = 0;
-        while (downisneg && (k < amountofvar)) {
+        while (downisneg || (k < amountofvar)) {
             // find the pivot number
             double[] temp = new double[pivotTable.length - 1];
             int indexX = findMin(pivotTable[pivotTable.length - 1]);
