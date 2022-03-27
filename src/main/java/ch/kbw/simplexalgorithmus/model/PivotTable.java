@@ -226,7 +226,41 @@ public class PivotTable {
         return out;
     }
 
-
+    public void umkehren(){
+        double tempdouble[][] = new double[tempheight + 1][tempvarCount+1];
+        double tempdouble2[][] = new double[tempheight + 1][tempvarCount+1];
+        for(int i = 0; i < tempvarCount; i++){ // COLS
+            for(int j = 0; j < tempheight + 1; j++) { // ROWS
+                tempdouble[j][i] = pivotTable[j][i];
+            }
+        }
+        for(int j = 0; j < tempheight + 1; j++) { // ROWS, last col
+            tempdouble[j][tempdouble.length - 1] = pivotTable[j][tempheight + tempvarCount];
+        }
+        // mirror columns
+        for(int i = 0; i < tempdouble.length; i++){
+            for(int j = 0; j < tempdouble[i].length; j++){
+                tempdouble2[i][j] = tempdouble[i][tempdouble[i].length-1-j];
+            }
+        }
+        for(int i = 0; i < tempdouble.length; i++){
+            double [] temp = new double[3];
+            for(int j = 0; j < tempdouble.length; j++){
+                temp[j] = tempdouble2[j][tempdouble.length - i - 1];
+            }
+            for(int j = 0; j < tempdouble.length; j++){
+                tempdouble[i][j] = temp[j];
+            }
+        }
+        for(int i = 0; i < tempvarCount; i++){ // COLS
+            for(int j = 0; j < tempheight + 1; j++) { // ROWS
+                pivotTable[j][i] = tempdouble[j][i];
+            }
+        }
+        for(int j = 0; j < tempheight + 1; j++) { // ROWS, last col
+             pivotTable[j][tempheight + tempvarCount] = tempdouble[j][tempdouble.length - 1];
+        }
+    }
 
     public void greaterEquals(int lineY) {
         for (int j = 0; j < tempvarCount; j++) {

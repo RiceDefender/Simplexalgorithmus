@@ -12,6 +12,7 @@ import ch.kbw.simplexalgorithmus.model.PivotTable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -35,6 +36,8 @@ public class MainController {
     private TextField fld_equationCount;
     @FXML
     private Label lbl_error;
+    @FXML
+    private Button btn_minMax;
 
     private ArrayList<String> ids;
 
@@ -73,6 +76,9 @@ public class MainController {
             }else {
                 pivotTable.setValue(0D,y,varCount+equationCount);
             }
+        }
+        if(btn_minMax.getText().equals("Minimieren")){
+            pivotTable.umkehren();
         }
         // Apply *-1 to row if toggle button is activated (unactivated >=, activated <=).
         System.out.println("Before: \n" + pivotTable.toString());
@@ -123,6 +129,25 @@ public class MainController {
             System.out.println("generate: error: values invalid. valid => 2 - 8.");
         }
 
+    }
+
+    @FXML
+    public void minmaxPivotTable(){
+        if(btn_minMax.getText().equals("Maximieren")){
+            btn_minMax.setText("Minimieren");
+        }else{
+            btn_minMax.setText("Maximieren");
+        }
+        for(int i = 0; i < toggleButtons.size() - 1; i++){
+            ToggleButton current = toggleButtons.get(i);
+            if(current.getText().equals(">=")){
+                current.setText("<=");
+                current.setSelected(true);
+            }else{
+                current.setText(">=");
+                current.setSelected(false);
+            }
+        }
     }
 
     // produces the matrix of TextFields und ToggleButtons that take the values of the equations.
