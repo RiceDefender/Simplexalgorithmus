@@ -11,6 +11,7 @@ public class PivotTable {
     double[] initial_gain_f;
     boolean downisneg = true;
     boolean rightisneg = true; //=> only for Dualer Simplex
+    int k = 0; //k = Anz der Variablen
 
     //Erstellt einen PivotTable mit der Einheitsmatrix
     public PivotTable(int varCount, int height) {
@@ -53,8 +54,7 @@ public class PivotTable {
             }
         }
 
-        // k = Anz der Variablen
-        int k = 0;
+
         while (downisneg || (k < amountofvar)) {
             // find the pivot number
             double[] temp = new double[pivotTable.length - 1];
@@ -205,6 +205,20 @@ public class PivotTable {
         // As long as the right side isn't positive
 
         while (rightisneg) {
+
+            //If user gives last row in positive
+            boolean priturnneg = false;
+            for (int i = 0; i < tempvarCount; i++) {
+                if (!(pivotTable[tempheight][i] < 0)) {
+                    priturnneg = true;
+                }
+            }
+            if (priturnneg){
+                for (int j = 0; j < tempvarCount; j++) {
+                    pivotTable[pivotTable.length - 1][j] *= -1;
+                }
+            }
+
             int indexY = 0;
             int indexX = 0;
             initial_gain_f = new double[tempvarCount];
@@ -255,7 +269,6 @@ public class PivotTable {
                 }else {
                     indexX = i;
                 }
-
                  */
             }
             System.out.println("INDEX X = " + indexX + " INDEX Y = " + indexY);
@@ -314,31 +327,34 @@ public class PivotTable {
                 System.out.println("right is" + rightisneg);
             }
             System.out.println("right is" + rightisneg);
-
+            k++;
         }
+        String out = "";
         //Check if it should switch to cycle for primaler Simplex.
         for (int i = 0; i < tempvarCount; i++) {
             if (pivotTable[tempheight][i] < 0) {
                 cycle();
-            }
-        }
+            } else {
+                /////////////////////////////////////////////////////////
+                System.out.println("A " + toString());
 
-        /////////////////////////////////////////////////////////
-        System.out.println("A " + toString());
-        String out = "";
-        for (int x = 0; x < tempvarCount; x++) {
-            for (int y = 0; y < tempheight; y++) {
-                if (pivotTable[y][x] == 1) {
-                    out += initial_gain_f[x] + " * " + pivotTable[y][tempheight + tempvarCount];
+                for (int x = 0; x < tempvarCount; x++) {
+                    for (int y = 0; y < tempheight; y++) {
+                        if (pivotTable[y][x] == 1) {
+                            out += initial_gain_f[x] + " * " + pivotTable[y][tempheight + tempvarCount];
+                        }
+                    }
+                    if (x != tempvarCount - 1) {
+                        out += " + ";
+                    }
                 }
-            }
-            if (x != tempvarCount - 1) {
-                out += " + ";
+                out += " = " + Math.abs(pivotTable[pivotTable.length - 1][tempheight + tempvarCount]);
+                return out;
             }
         }
-        out += " = " + Math.abs(pivotTable[pivotTable.length - 1][tempheight + tempvarCount]);
         return out;
     }
+
 
 
     public void greaterEquals(int lineY) {
