@@ -83,8 +83,14 @@ public class MainController {
         }
         System.out.println("After: \n" + pivotTable.toString());
         // calculate the most optimal solution and display it on the label
-        setLabel(pivotTable.cycle(), Format.RESULT);
+
         System.out.println(pivotTable.toString());
+
+        if(!pivotTable.negchecker()){
+            setLabel(pivotTable.cycle(), Format.RESULT);
+        } else {
+            setLabel(pivotTable.dualcycle(), Format.RESULT);
+        }
 
     }
 

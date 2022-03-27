@@ -306,7 +306,6 @@ public class PivotTable {
             }
             System.out.println("right is" + rightisneg);
 
-            //ABC++;
         }
         //Check if it should switch to cycle for primaler Simplex.
         for (int i = 0; i < tempvarCount; i++) {
@@ -315,14 +314,6 @@ public class PivotTable {
             }
         }
 
-        /*
-        for (int l = 0; l > tempvarCount; l++) {
-            if (pivotTable[tempheight][l] != 0) {
-                return cycle();
-            }
-        }
-
-         */
         /////////////////////////////////////////////////////////
         System.out.println("A " + toString());
         String out = "";
@@ -340,9 +331,6 @@ public class PivotTable {
         return out;
     }
 
-    public boolean isDownisneg() {
-        return true;
-    }
 
     public void greaterEquals(int lineY) {
         for (int j = 0; j < tempvarCount; j++) {
@@ -387,6 +375,15 @@ public class PivotTable {
             }
         }
         return index;
+    }
+
+    public boolean negchecker(){
+        for (int i = 0; i < tempheight; i++) {
+            if(pivotTable[i][tempvarCount+tempheight] < 0){
+                return true;
+            }
+        }
+        return false;
     }
 }
 
