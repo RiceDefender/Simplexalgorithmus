@@ -40,7 +40,6 @@ public class PivotTable {
         }
         int amountofvar = tempvarCount; //gets the amount of variables
 
-
         //Check if it should switch to cycle for primaler Simplex.
         boolean priturnneg = false;
         for (int i = 0; i < tempvarCount; i++) {
@@ -54,7 +53,6 @@ public class PivotTable {
             }
         }
 
-
         while (downisneg || (k < amountofvar)) {
             // find the pivot number
             double[] temp = new double[pivotTable.length - 1];
@@ -67,8 +65,6 @@ public class PivotTable {
             int indexY = findMin(temp);
             double pivotnum = pivotTable[indexY][indexX];
             System.out.println(toString());
-
-
             //Going to subtract everything but pivot to 0
             for (int j = 0; j < pivotTable.length; j++) {
                 double devider = pivotTable[j][indexX] / pivotTable[indexY][indexX];
@@ -79,89 +75,13 @@ public class PivotTable {
                 }
             }
             System.out.println(toString());
+
             //Make the pivot 1
             double devider = pivotTable[indexY][indexX] / 1;
             for (int i = 0; i < pivotTable[k].length; i++) {
                 pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
             }
             System.out.println(toString());
-
-
-            //Not used Experimental Code
-            /*
-            indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
-            System.out.println(indexX);
-                indexY = findMin(temp);
-
-            System.out.println(indexY + "INDEXY");
-            System.out.println(indexX + " INDEX X");
-                if(k==0){
-            for (int i = 0; i < pivotTable.length - 1; i++) {
-                System.out.println(pivotTable[i][5] +"=> number");
-                pivotTable[i][5] = pivotTable[i][5] / pivotTable[i][indexX];
-                System.out.println(pivotTable[i][5]);
-                System.out.println("Q");
-            }
-            }
-
-             */
-            /*
-            devider = pivotTable[pivotTable.length-1][k] / pivotTable[indexY][indexX];
-            for (int i = 0; i < pivotTable[k].length; i++) {//Not deviding the pivot
-
-                    pivotTable[pivotTable.length-1][i] = pivotTable[pivotTable.length-1][i] - pivotTable[indexY][i] * devider;
-                System.out.println(toString());
-            }
-
-
-            indexX++;
-
-             */
-            /*
-            indexX = findMin(pivotTable[pivotTable.length-1]); // is the pivot row
-            for(int i = 0; i < pivotTable.length -1; i++){
-                temp[i] = pivotTable[i][pivotTable[i].length-1] / pivotTable[i][indexX];
-            }
-            indexY = findMin(temp);
-            pivotnum = pivotTable[indexY][indexX];
-            System.out.println(toString());
-            System.out.println(indexX + " : " + indexY + " : " + pivotnum);
-            System.out.println(pivotTable[indexY][indexX]);
-
-            for (int j=0; j <pivotTable.length;j++ ) {
-                devider = pivotTable[j][1] / pivotTable[indexY][indexX];
-                for (int i = 0; i < pivotTable[1].length; i++) {
-                    if(pivotTable[j] != pivotTable[indexY]) { //Not deviding the pivot
-                        pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider;
-                    }
-                }
-            }
-            System.out.println(toString());
-
-            devider = pivotTable[indexY][indexX] / 1;
-            for (int i = 0; i < pivotTable[1].length; i++) {
-                if (pivotTable[indexY][i]!= 0) {
-                    pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
-                }
-            }
-            System.out.println(toString());
-            */
-            /*
-            // make pivot number 1 and ratio the rest of the pivot row
-            ratioRow(indexY, pivotnum);
-            System.out.println(toString());
-            for(int i = 0; i < pivotTable.length-1; i++){
-                ratioRow(i, pivotTable[i][indexX]);
-            }
-            System.out.println(toString());
-
-             */
-            /*
-            // make every number in pivotCol except pivot num 0
-            for(int i = 0; i < pivotTable.length; i++){
-                if (i != indexY) subtractAgainst(i, indexY);
-            }
-         */
             int negativechecker = 0;
             for (int i = 0; i < tempvarCount; i++) { //If check the last row is pos
                 if (pivotTable[tempheight][i] < 0) {
@@ -199,13 +119,11 @@ public class PivotTable {
     public String dualcycle() {
         // 1. pivotrow = smallest negative number in results column.
         // 2. divide every number of maximize function array with corresponding number in pivotrow -> chose smallest resulting number as pivotcolumn index.
-        // 3.
         //////////////////////////////////////////////////////////
 
         // As long as the right side isn't positive
 
         while (rightisneg) {
-
             //If user gives last row in positive
             boolean priturnneg = false;
             for (int i = 0; i < tempvarCount; i++) {
@@ -218,7 +136,6 @@ public class PivotTable {
                     pivotTable[pivotTable.length - 1][j] *= -1;
                 }
             }
-
             int indexY = 0;
             int indexX = 0;
             initial_gain_f = new double[tempvarCount];
@@ -226,19 +143,6 @@ public class PivotTable {
                 initial_gain_f[i] = pivotTable[pivotTable.length - 1][i];
             }
             // find the pivot number
-            /*
-            double[] temp = new double[pivotTable.length - 1];
-            int indexX = findMin(pivotTable[pivotTable.length - 1]);
-            for (int i = 0; i < pivotTable.length - 1; i++) {
-                if (pivotTable[i].length - 1 != 0 && pivotTable[i][tempvarCount + tempheight] <= 0) { //if devider is not 0 devide!
-                    temp[i] = pivotTable[i][pivotTable[i].length - 1] / pivotTable[i][indexX];
-                }
-            }
-            int indexY = findMin(temp);
-            System.out.println("INDEX X = "+ indexX + " INDEX Y = "+ indexY);
-            double pivotnum = pivotTable[indexY][indexX];
-            System.out.println(toString());
-             */
             //--------------------------------------------------------------------------------------------------------
             double temp = 0;
             for (int i = 0; i < (tempheight - 1); i++) { //Searching for X in bi smallest num
@@ -258,24 +162,9 @@ public class PivotTable {
                         indexX = i;
                     }
                 }
-                /*
-                if (i != 0) {
-                    if (pivotTable[indexY][i] == 0) {
-                        if ((pivotTable[tempheight-1][i]/pivotTable[indexY][i]) <temp){
-                            temp = pivotTable [indexY][i];
-                            indexX = i;
-                        }
-                    }
-                }else {
-                    indexX = i;
-                }
-                 */
             }
             System.out.println("INDEX X = " + indexX + " INDEX Y = " + indexY);
-
             //--------------------------------------------------------------------------------------------------------
-
-
             //Make the pivot 1
             double devider = pivotTable[indexY][indexX] / 1;
             if (devider > 0) {
@@ -285,7 +174,6 @@ public class PivotTable {
                 pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
             }
             System.out.println(toString());
-
             //Going to subtract everything but pivot to 0
             for (int j = 0; j < pivotTable.length; j++) { //Amount of gleichungen
                 devider = pivotTable[j][indexX] / pivotTable[indexY][indexX];
@@ -294,28 +182,11 @@ public class PivotTable {
 
                     System.out.println(devider + "DEVIDER" + indexX + "INDEX X");
                     if (pivotTable[j] != pivotTable[indexY]) { //Not dividing the pivot
-                        // pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider; /// [i]<--------!
-                        // toString();
-
-
                         pivotTable[j][i] = pivotTable[j][i] - pivotTable[indexY][i] * devider;
                         System.out.println("AFTER: " + toString());
                     }
                 }
-                /*
-                for (int i = 0; i < pivotTable[indexX].length; i++) { // subtract arrays
-                    toString();
-                    //System.out.println(devider +"DEVIDER" + indexX+"INDEX X");
-                    if (pivotTable[j] != pivotTable[indexY]) { //Not dividing the pivot
-                        pivotTable[j][i] = pivotTable[j][i] + pivotTable[indexY][i];
-                    }
-                }
-
-                 */
-
             }
-
-
             int negativechecker = 0;
             for (int i = 0; i < (tempheight - 1); i++) {
                 if (pivotTable[i][tempvarCount + tempheight] < 0) {
@@ -411,4 +282,3 @@ public class PivotTable {
         return false;
     }
 }
-
