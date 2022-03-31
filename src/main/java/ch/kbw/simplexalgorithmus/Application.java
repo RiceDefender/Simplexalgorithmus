@@ -1,6 +1,5 @@
 package ch.kbw.simplexalgorithmus;
 
-import ch.kbw.simplexalgorithmus.model.PivotTable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
