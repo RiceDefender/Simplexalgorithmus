@@ -244,7 +244,7 @@ public class PivotTable {
             }
         }
         for(int i = 0; i < tempdouble.length; i++){
-            double [] temp = new double[3];
+            double [] temp = new double[tempdouble.length];
             for(int j = 0; j < tempdouble.length; j++){
                 temp[j] = tempdouble2[j][tempdouble.length - i - 1];
             }

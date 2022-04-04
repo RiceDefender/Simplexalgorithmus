@@ -114,25 +114,29 @@ public class MainController {
     @FXML
     public void generate() {
         clean();
-        setLabel("", Format.RESET);
         int val = Integer.parseInt(fld_varCount.getText());
         int val2 = Integer.parseInt(fld_equationCount.getText());
         if(val <= 8 && val2 <= 8 && val > 1 && val2 > 1){
             if(val <= val2){
                 fillPane(val, val2);
             }else{
-                setLabel("generate: error: more variables than equations", Format.ERROR);
-                System.out.println("generate: error: more variables than equations");
+                setLabel("Error: more variables than equations", Format.ERROR);
+                System.out.println("Error: more variables than equations");
             }
         }else{
-            setLabel("generate: error: values invalid. valid => 2 - 8.", Format.ERROR);
-            System.out.println("generate: error: values invalid. valid => 2 - 8.");
+            setLabel("Error: values invalid. valid => 2 - 8.", Format.ERROR);
+            System.out.println("Error: values invalid. valid => 2 - 8.");
         }
 
     }
 
     @FXML
     public void minmaxPivotTable(){
+        if(toggleButtons == null){
+            setLabel("INFO: No toggle buttons to be written to.", Format.INFO);
+            System.out.println("INFO: No toggle buttons to be written to.");
+            return;
+        }
         if(btn_minMax.getText().equals("Maximieren")){
             btn_minMax.setText("Minimieren");
         }else{
@@ -142,11 +146,12 @@ public class MainController {
             ToggleButton current = toggleButtons.get(i);
             if(current.getText().equals(">=")){
                 current.setText("<=");
-                current.setSelected(true);
             }else{
                 current.setText(">=");
-                current.setSelected(false);
             }
+        }
+        for(ToggleButton b : toggleButtons){
+            System.out.println(b.isSelected());
         }
     }
 
@@ -201,10 +206,18 @@ public class MainController {
                         tglBtn.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if(tglBtn.isSelected()){
-                                    tglBtn.setText("<=");
+                                if(btn_minMax.getText().equals("Maximieren")){
+                                    if(tglBtn.isSelected()){
+                                        tglBtn.setText("<=");
+                                    }else{
+                                        tglBtn.setText(">=");
+                                    }
                                 }else{
-                                    tglBtn.setText(">=");
+                                    if(tglBtn.isSelected()){
+                                        tglBtn.setText(">=");
+                                    }else{
+                                        tglBtn.setText("<=");
+                                    }
                                 }
                             }
                         });
@@ -241,6 +254,14 @@ public class MainController {
 
     // removes the matrix, to be reset.
     private void clean(){
+        setLabel("", Format.RESET);
+        btn_minMax.setText("Maximieren");
+        if(toggleButtons != null){
+            for(ToggleButton b : toggleButtons){
+                b.setSelected(false);
+                b.setText(">=");
+            }
+        }
         if(ids == null) return;
         pain.getChildren().removeIf(n -> n.getId() != null && ids.contains(n.getId()));
     }
