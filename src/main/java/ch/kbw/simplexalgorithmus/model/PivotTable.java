@@ -78,7 +78,7 @@ public class PivotTable {
 
             //Make the pivot 1
             double devider = pivotTable[indexY][indexX] / 1;
-            for (int i = 0; i < pivotTable[k].length; i++) {
+            for (int i = 0; i < tempheight; i++) {
                 pivotTable[indexY][i] = pivotTable[indexY][i] / devider;
             }
             System.out.println(toString());
