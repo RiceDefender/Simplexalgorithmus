@@ -202,28 +202,31 @@ public class PivotTable {
         }
         String out = "";
         //Check if it should switch to cycle for primaler Simplex.
-        for (int i = 0; i < tempvarCount; i++) {
-            if (pivotTable[tempheight][i] < 0) {
-                cycle();
-            } else {
-                /////////////////////////////////////////////////////////
-                System.out.println("A " + toString());
-
-                for (int x = 0; x < tempvarCount; x++) {
-                    for (int y = 0; y < tempheight; y++) {
-                        if (pivotTable[y][x] == 1) {
-                            out += initial_gain_f[x] + " * " + pivotTable[y][tempheight + tempvarCount];
-                        }
-                    }
-                    if (x != tempvarCount - 1) {
-                        out += " + ";
+        if(!isPositve(pivotTable[tempheight])){
+            out = cycle();
+        }else{
+            System.out.println("A " + toString());
+            for (int x = 0; x < tempvarCount; x++) {
+                for (int y = 0; y < tempheight; y++) {
+                    if (pivotTable[y][x] == 1) {
+                        out += initial_gain_f[x] + " * " + pivotTable[y][tempheight + tempvarCount];
                     }
                 }
-                out += " = " + Math.abs(pivotTable[pivotTable.length - 1][tempheight + tempvarCount]);
-                return out;
+                if (x != tempvarCount - 1) {
+                    out += " + ";
+                }
             }
+            out += " = " + Math.abs(pivotTable[pivotTable.length - 1][tempheight + tempvarCount]);
         }
+
         return out;
+    }
+
+    private boolean isPositve(double [] array){
+        for(double d : array){
+            if(d < 0) return false;
+        }
+        return true;
     }
 
     public void umkehren(){
