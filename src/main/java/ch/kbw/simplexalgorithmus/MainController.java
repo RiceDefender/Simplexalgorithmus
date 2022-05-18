@@ -9,13 +9,12 @@
 package ch.kbw.simplexalgorithmus;
 
 import ch.kbw.simplexalgorithmus.model.PivotTable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -37,7 +36,13 @@ public class MainController {
     @FXML
     private Label lbl_error;
     @FXML
-    private Button btn_minMax;
+    private ChoiceBox<String> choicebox;
+
+    @FXML
+    private void initialize(){
+        choicebox.getItems().addAll("Maximieren", "Minimieren");
+        choicebox.setValue("Maximieren");
+    }
 
     private ArrayList<String> ids;
 
@@ -50,6 +55,13 @@ public class MainController {
 
     @FXML
     public void calc() {
+        // Error handling
+        if(flds == null){
+            setLabel("Keine Felder. Klicken Sie auf 'Felder anzeigen'", Format.ERROR);
+            System.out.println("Error:\tKeine Felder. Klicken Sie auf 'Felder anzeigen'");
+            return;
+        }
+
         for (int i = 0;i  < flds.size(); i++) {
             System.out.println(flds.get(i).getText());
         }
@@ -77,8 +89,10 @@ public class MainController {
                 pivotTable.setValue(0D,y,varCount+equationCount);
             }
         }
-        if(btn_minMax.getText().equals("Minimieren")){
+
+        if(choicebox.getValue().equals("Minimieren")){
             pivotTable.umkehren();
+            System.out.println("Pivot umgekehrt.");
         }
         // Apply *-1 to row if toggle button is activated (unactivated >=, activated <=).
         System.out.println("Before: \n" + pivotTable.toString());
@@ -114,39 +128,47 @@ public class MainController {
     @FXML
     public void generate() {
         clean();
-        setLabel("", Format.RESET);
+
+        // Error handling
+        if(fld_varCount.getText().isBlank() || fld_equationCount.getText().isBlank()){
+            setLabel("Anzahl der Variablen oder Gleichungen nicht bestimmt.", Format.ERROR);
+            System.out.println("Error:\tAnzahl der Variablen oder Gleichungen nicht bestimmt.");
+            return;
+        }
+
         int val = Integer.parseInt(fld_varCount.getText());
         int val2 = Integer.parseInt(fld_equationCount.getText());
         if(val <= 8 && val2 <= 8 && val > 1 && val2 > 1){
             if(val <= val2){
                 fillPane(val, val2);
             }else{
-                setLabel("generate: error: more variables than equations", Format.ERROR);
-                System.out.println("generate: error: more variables than equations");
+                setLabel("Error: more variables than equations", Format.ERROR);
+                System.out.println("Error: more variables than equations");
             }
         }else{
-            setLabel("generate: error: values invalid. valid => 2 - 8.", Format.ERROR);
-            System.out.println("generate: error: values invalid. valid => 2 - 8.");
+            setLabel("Error: values invalid. valid => 2 - 8.", Format.ERROR);
+            System.out.println("Error: values invalid. valid => 2 - 8.");
         }
 
     }
 
     @FXML
     public void minmaxPivotTable(){
-        if(btn_minMax.getText().equals("Maximieren")){
-            btn_minMax.setText("Minimieren");
-        }else{
-            btn_minMax.setText("Maximieren");
+        if(toggleButtons == null){
+            setLabel("INFO: No toggle buttons to be written to.", Format.INFO);
+            System.out.println("INFO: No toggle buttons to be written to.");
+            return;
         }
         for(int i = 0; i < toggleButtons.size() - 1; i++){
             ToggleButton current = toggleButtons.get(i);
             if(current.getText().equals(">=")){
                 current.setText("<=");
-                current.setSelected(true);
             }else{
                 current.setText(">=");
-                current.setSelected(false);
             }
+        }
+        for(ToggleButton b : toggleButtons){
+            System.out.println(b.isSelected());
         }
     }
 
@@ -201,10 +223,18 @@ public class MainController {
                         tglBtn.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if(tglBtn.isSelected()){
-                                    tglBtn.setText("<=");
+                                if(choicebox.getValue().equals("Maximieren")){
+                                    if(tglBtn.isSelected()){
+                                        tglBtn.setText("<=");
+                                    }else{
+                                        tglBtn.setText(">=");
+                                    }
                                 }else{
-                                    tglBtn.setText(">=");
+                                    if(tglBtn.isSelected()){
+                                        tglBtn.setText(">=");
+                                    }else{
+                                        tglBtn.setText("<=");
+                                    }
                                 }
                             }
                         });
@@ -241,6 +271,14 @@ public class MainController {
 
     // removes the matrix, to be reset.
     private void clean(){
+        setLabel("", Format.RESET);
+        choicebox.setValue("Maximieren");
+        if(toggleButtons != null){
+            for(ToggleButton b : toggleButtons){
+                b.setSelected(false);
+                b.setText(">=");
+            }
+        }
         if(ids == null) return;
         pain.getChildren().removeIf(n -> n.getId() != null && ids.contains(n.getId()));
     }

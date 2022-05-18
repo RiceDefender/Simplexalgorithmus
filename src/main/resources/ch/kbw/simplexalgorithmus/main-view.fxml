@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -26,7 +27,7 @@
          <Insets right="30.0" />
       </padding>
     </ButtonBar>
-   <Label fx:id="lbl_error" layoutX="22.0" layoutY="429.0" prefHeight="17.0" prefWidth="0.0" />
+   <Label fx:id="lbl_error" layoutX="22.0" layoutY="429.0" prefHeight="17.0" prefWidth="493.0" />
    <GridPane layoutX="50.0" layoutY="53.0">
      <columnConstraints>
        <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.5" minWidth="10.0" prefWidth="118.5" />
@@ -43,5 +44,5 @@
          <Label text="Anzahl Gleichungen" GridPane.rowIndex="1" />
       </children>
    </GridPane>
-   <Button fx:id="btn_minMax" layoutX="646.0" layoutY="41.0" mnemonicParsing="false" onAction="#minmaxPivotTable" prefWidth="100.0" text="Maximieren" />
+   <ChoiceBox fx:id="choicebox" layoutX="596.0" layoutY="41.0" prefWidth="150.0" />
 </Pane>
